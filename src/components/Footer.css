@@ -1,0 +1,39 @@
+.footer {
+    background-color: #EDEDE9;
+}
+
+.footer-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    color: #333;
+    padding: 20px 40px;
+    margin: 20px;
+    cursor: pointer;
+    margin: 20px 40px;
+}
+
+.conditions {
+    display: flex;
+    flex-direction: column;
+    padding: 20px 0;
+}
+
+.help-contact {
+    display: flex;
+    flex-direction: column;
+    padding: 20px 0;
+}
+
+.footer-title {
+    font-family: 'Merriweather';
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.footer-link {
+    font-family: 'Montserrat';
+    text-decoration: none;
+    color: #333;
+    padding-top: 20px;
+}
