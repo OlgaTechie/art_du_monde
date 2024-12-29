@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { FaUser, FaHeart, FaShoppingCart } from 'react-icons/fa';
+import { User, Heart, ShoppingCart } from 'react-feather';
 import './Header.css';
 
 const Header = () => {
@@ -18,9 +18,9 @@ const Header = () => {
                 </div>
 
                 <div className="icons">
-                    <FaUser className="icon" />
-                    <FaHeart className="icon" />
-                    <FaShoppingCart className="icon" />
+                    <User className="icon" />
+                    <Heart className="icon" />
+                    <ShoppingCart className="icon" />
                 </div>
             </div>
 

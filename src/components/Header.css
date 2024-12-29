@@ -18,24 +18,28 @@
 .nav-link {
     text-decoration: none;
     color: #333;
-    font-size: 16px;
+    font-size: 18px;
+    font-weight: bold;
+    font-family: 'Merriweather';
+    padding-right: 20px;
 }
 
-.nav-link .home-link {
+.home-link {
     font-weight: bold;
     text-decoration: underline;
 }
 
 .logo {
+    flex: 1;
+    display: flex;
+    justify-content: center;
     text-align: center;
     margin: 10px 0;
 }
 
 .logo-image {
-    max-width: 180px; /* Ajuster la largeur maximale du logo */
+    max-width: 120px; /* Ajuster la largeur maximale du logo */
     height: auto; /* Maintenir les proportions de l'image */
-    display: block; /* S'assurer que l'image est centrée si nécessaire */
-    margin: 0 auto; /* Centrer horizontalement */
 }
 
 .icons {
@@ -46,6 +50,8 @@
 
 .icon {
     cursor: pointer;
+    fill: none; /* Pas de remplissage */
+    stroke: #000; /* Contours noirs */
 }
 
 .propositions {
@@ -58,9 +64,9 @@
 .proposition {
     text-decoration: none;
     color: #333;
-    font-size: 16px;
-}
-
-.proposition:hover {
-    color: #007bff;
+    font-size: 18px;
+    font-weight: bold;
+    font-family: 'Merriweather';
+    padding-right: 20px;
+    cursor: pointer;
 }
