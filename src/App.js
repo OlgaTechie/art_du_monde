@@ -9,6 +9,7 @@ import WomenPage from './pages/WomenPage';
 import ChildrenPage from './pages/ChildrenPage';
 import LongDressPage from './pages/LongDressPage';
 import CartPage from './pages/CartPage';
+import Footer from "./components/Footer";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
         <Route path="/longDress" element={<LongDressPage />} />
         <Route path="/cart" element={<CartPage />} />
       </Routes>
+      <Footer />
     </Router>
   );
 }
