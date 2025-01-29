@@ -1,11 +1,9 @@
 .header {
     background-color: #fff;
     padding: 20px;
-    border-bottom: 2px solid #ccc;
     margin: 0 20px;
     display: flex;
     flex-direction: column;
-    height: 100vh;
     align-items: center;
     text-align: center;
 }
@@ -83,4 +81,18 @@
     font-family: 'Merriweather';
     padding-right: 20px;
     cursor: pointer;
+}
+
+.username {
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+.logout-button {
+    cursor: pointer;
+    background-color: #E6CCB2;
+}
+
+.logout-button:hover {
+    background-color: #C4A484;;
 }

@@ -1,9 +1,28 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { User, Heart, ShoppingCart } from 'react-feather';
 import './Header.css';
 
 const Header = () => {
+    const [user, setUser] = useState(null);
+    const navigate = useNavigate();
+
+    // Vérifier si un utilisateur est connecté au chargement de la page
+    useEffect(() => {
+        const loggedUser = localStorage.getItem("user");
+        if (loggedUser) {
+            setUser(JSON.parse(loggedUser));
+        }
+    }, []);
+
+    //Fonction pour déconnexion
+    const handleLogout = () => {
+        localStorage.removeItem("user");
+        setUser(null);
+        navigate("/");
+    };
+
     return (
         <header className="header">
             <div className="header-top">
@@ -18,7 +37,16 @@ const Header = () => {
                 </div>
 
                 <div className="icons">
-                    <User className="icon" />
+                    {user ? (
+                        <>
+                            <span className="username">Bonjour, {user.name}</span>
+                            <button onClick={handleLogout} className="logout-button">Se déconnecter</button>
+                        </>
+                    ) : (
+                        <Link to="/login">
+                            <User className="icon" />
+                        </Link>
+                    )}
                     <Heart className="icon" />
                     <ShoppingCart className="icon" />
                 </div>

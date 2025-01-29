@@ -1,0 +1,43 @@
+.banner-container {
+    width: 100%;
+}
+
+.banner-image {
+    width: 100%;
+    height: 500px;
+    object-fit: cover;
+}
+
+.banner-text {
+    color: #333;
+    font-size: 18px;
+    font-weight: bold;
+    font-family: 'Merriweather';
+    text-align: center;
+}
+
+.banner-buttons {
+    display: flex;
+    flex-direction: row;
+    gap: 50px;
+    justify-content: center;
+}
+
+.banner-button {
+    background-color: #E6CCB2;
+    padding: 16px 24px;
+    font-family: 'Merriweather';
+    font-size: 20px;
+    font-weight: bold;
+    border: none;
+    border-radius: 20px;
+    color: #333;
+    cursor: pointer;
+    width: 200px;
+    margin: 0 20px 20px 20px;
+    transition: background-color 0.5s;
+}
+
+.banner-button:hover {
+    background-color: #d1b194;;
+}
