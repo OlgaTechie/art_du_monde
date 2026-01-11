@@ -18,16 +18,12 @@ const LoginForm = ({ onLogin, setShowForgotPassword }) => {
 
         if (!email) setEmailError("Veuillez entrer un email valide.");
         if (!password) setPasswordError("Veuillez entrer un mot de passe valide.");
-        
+
 
         if (email && password) {
-            if (role === "admin") {
-                if (email === "admin@email.com" && password === "admin123") {
-                    onLogin("admin");
-                    navigate("/admin");
-                } else {
-                    setPasswordError("Identifiants administrateur incorrects");
-                }
+            if (email === "admin@email.com" && password === "admin123") {
+                onLogin("admin");
+                navigate("/admin");
             } else {
                 onLogin("client");
                 navigate("/account");
@@ -38,17 +34,9 @@ const LoginForm = ({ onLogin, setShowForgotPassword }) => {
     return (
         <div className="login-form-container">
             <h2>Connexion</h2>
-            <div className="login-role">
-                <button className={role === "client" ? "active" : ""} onClick={() =>setRole("client")}>
-                    Client
-                </button>
-                <button className={role === "admin" ? "active" : ""} onClick={() =>setRole("admin")}>
-                    Administrateur
-                </button>
-            </div>
 
             <form className="login-form" onSubmit={handleSubmit}>
-                <div className="input-group"> 
+                <div className="input-group">
                     <input
                         type="email"
                         placeholder="Email"
@@ -56,10 +44,10 @@ const LoginForm = ({ onLogin, setShowForgotPassword }) => {
                         onChange={(e) => setEmail(e.target.value)}
                     />
                     {emailError && <p className="error-message">{emailError}</p>}
-                </div>  
+                </div>
 
                 <div className="input-group">
-                <input 
+                    <input
                         type="password"
                         placeholder="Mot de passe"
                         value={password}
@@ -69,10 +57,12 @@ const LoginForm = ({ onLogin, setShowForgotPassword }) => {
                 </div>
 
                 <p className="forgot-password" onClick={() => setShowForgotPassword(true)}>
-                Mot de passe oublié ?
+                    Mot de passe oublié ?
                 </p>
-                    
-                <button type="submit">Se connecter</button>
+
+                <div className="input-group">
+                    <button type="submit">Se connecter</button>
+                </div>
             </form>
         </div>
     );

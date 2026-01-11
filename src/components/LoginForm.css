@@ -59,8 +59,9 @@
     text-decoration: underline;
 }
 
-button {
+.login-form button {
     width: 100%;
+    box-sizing: border-box;
     padding: 12px;
     background-color: #C29D7E;
     color: white;
@@ -72,27 +73,6 @@ button {
     transition: background-color 0.3s;
 }
 
-button:hover {
+.login-form button:hover {
     background-color: #A67C5B;
-}
-
-.login-role {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    margin-bottom: 20px;
-}
-
-.login-role button {
-    background-color: #E6CCB2;
-    padding: 8px 16px;
-    font-size: 14px;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-.login-role button.active {
-    background-color: #C29D7E;
-    color: white;
 }
