@@ -1,0 +1,22 @@
+.children-hero {
+    text-align: center;
+    padding: 4rem 2rem;
+    background: linear-gradient(135deg, #f0f8f7 0%, #e4f1ef 100%);
+    margin-bottom: 3rem;
+    border-radius: 0 0 40px 40px;
+}
+
+.children-title {
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    color: #2d5a4a;
+    font-family: 'Merriweather', serif;
+    margin: 0 0 1rem 0;
+}
+
+.children-subtitle {
+    font-size: 1.3rem;
+    color: #555;
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.6;
+}

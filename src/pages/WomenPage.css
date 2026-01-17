@@ -1,0 +1,48 @@
+.women-hero {
+    text-align: center;
+    padding: 4rem 2rem;
+    background: linear-gradient(135deg, #f8f7f5 0%, #e9e4d9 100%);
+    margin-bottom: 3rem;
+    border-radius: 0 0 40px 40px;
+}
+
+.women-title {
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    color: #333;
+    font-family: 'Merriweather', serif;
+    margin: 0 0 1rem 0;
+}
+
+.women-subtitle {
+    font-size: 1.3rem;
+    color: #666;
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.6;
+}
+
+/* Réutilise les styles produits de HomePage */
+.products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+    margin: 2rem auto;
+    max-width: 1400px;
+    padding: 0 2rem;
+}
+
+@media (min-width: 1400px) {
+    .products-grid {
+        grid-template-columns: repeat(3, 350px);
+        justify-content: center;
+        gap: 3rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .products-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+        padding: 0 1rem;
+    }
+}

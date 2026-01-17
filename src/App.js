@@ -27,7 +27,10 @@ function App() {
         <Route path="/cart" element={<CartPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/admin" element={<AdminPage />} />
+        <Route path="/admin/dashboard" element={<AdminPage />} />
         <Route path="/account" element={<AccountPage />} />
+        <Route path="*" element={<div><h1>Page en construction</h1></div>} />
+        <Route path="/admin/dashboard" element={<div style={{ padding: "2rem", textAlign: "center" }}>ADMIN DASHBOARD ✅</div>} />
       </Routes>
       <Footer />
     </Router>

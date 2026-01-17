@@ -1,0 +1,133 @@
+.login-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 50vh;
+    text-align: center;
+}
+
+.products-title {
+    text-align: center;
+    margin-top: 2rem;
+    font-size: clamp(1.8rem, 5vw, 2.5rem);
+    color: #333;
+    font-family: 'Merriweather', serif;
+}
+
+.products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+    margin: 2rem auto;
+    max-width: 1400px;
+    padding: 0 2rem;
+}
+
+/* GRANDE ÉCRAN > 1400px */
+@media (min-width: 1400px) {
+    .products-grid {
+        grid-template-columns: repeat(3, 350px);
+        /* ← FIX 3 cartes max */
+        justify-content: center;
+        gap: 3rem;
+    }
+
+    .product-card {
+        max-width: 350px;
+        /* ← Largeur MAX fixe */
+        margin: 0 auto;
+    }
+
+    .product-image {
+        height: 240px;
+        /* ← Plus haute sur grand écran */
+    }
+}
+
+/* TABLETTE */
+@media (max-width: 768px) {
+    .products-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+        padding: 0 1rem;
+    }
+
+    .products-title {
+        font-size: 2rem;
+        margin-top: 1.5rem;
+    }
+}
+
+.product-card {
+    border: 1px solid #ddd;
+    padding: 1.5rem;
+    border-radius: 16px;
+    background: white;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+}
+
+.product-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
+}
+
+.product-image {
+    width: 100%;
+    height: 200px;
+    object-fit: contain;
+    object-position: center top;
+    /* ← TÊTE EN HAUT */
+    border-radius: 12px;
+    margin-bottom: 1rem;
+    background: #f8f7f5;
+}
+
+.product-title {
+    margin: 0 0 0.5rem 0;
+    font-size: 1.3rem;
+    color: #333;
+    font-weight: 500;
+    line-height: 1.4;
+}
+
+.product-price {
+    font-size: 1.6rem;
+    font-weight: bold;
+    color: #E6CCB2;
+    margin: 0;
+}
+
+/* ========== BANIÈRE NOUVELLE ========== */
+.banner {
+    width: 100%;
+    max-width: 1200px;
+    height: 20vh;
+    margin: 0 auto 3rem;
+    background-size: cover;
+    background-position: center;
+    border-radius: 20px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+/* GRANDS ÉCRANS : Bannière pleine largeur */
+@media (min-width: 1400px) {
+    .banner {
+        width: 100vw;
+        /* ← PLEINE LARGEUR écran */
+        max-width: 1600px;
+        /* ← Limite pour 4K */
+        margin: 0 auto 3rem;
+        height: 25vh;
+        /* ← Plus haute */
+        border-radius: 0;
+        /* ← Plein écran = pas d'angle */
+    }
+
+    /* Alignement produits sous bannière large */
+    .products-grid {
+        max-width: 1400px;
+        margin: 0 auto;
+    }
+}

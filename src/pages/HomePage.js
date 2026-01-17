@@ -1,24 +1,26 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Banner from "../components/Banner";
 import axios from "axios";
+import "./HomePage.css";
 
 const HomePage = () => {
     const [products, setProducts] = useState([]);
-    
+
     useEffect(() => {
-        // Appel au backend pour récupérer les produits
-        axios.get("http://localhost:5001/api/products")
+        // API admin avec les 2 produits de test
+        axios.get("http://localhost:5001/api/admin/products")
             .then(response => {
                 setProducts(response.data);
             })
             .catch(error => {
                 console.error("Erreur récupération produits :", error);
+                setProducts([]);
             });
     }, []);
 
     return (
         <div>
-            <Banner 
+            <Banner
                 imageSrc="/images/banner_1.jpg"
                 showText={true}
                 text={
@@ -32,14 +34,18 @@ const HomePage = () => {
                 ]}
             />
 
-            <h2 style={{ textAlign: "center", marginTop: "2rem" }}>Nos Produits</h2>
+            <h2 className="products-title">Nos Produits</h2>
 
-            <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: "20px", margin: "2rem" }}>
+            <div className="products-grid">
                 {products.map((product) => (
-                    <div key={product._id} style={{ border: "1px solid #ddd", padding: "1rem", width: "200px" }}>
-                        <img src={product.imageUrl} alt={product.title} style={{ width: "100%", height: "auto"}} />
-                        <h3>{product.title}</h3>
-                        <p>{product.price} €</p>
+                    <div key={product._id} className="product-card">
+                        <img
+                            src={product.imageUrl}
+                            alt={product.title}
+                            className="product-image"
+                        />
+                        <h3 className="product-title">{product.title}</h3>
+                        <p className="product-price">{product.price} €</p>
                     </div>
                 ))}
             </div>

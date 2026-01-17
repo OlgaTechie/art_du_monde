@@ -1,4 +1,3 @@
-import React from "react";
 import { useNavigate } from "react-router-dom";
 import "./Banner.css";
 
@@ -7,7 +6,7 @@ const Banner = ({ imageSrc, showText = true, text = "", buttons = [] }) => {
 
     return (
         <div className="banner-container">
-            <img 
+            <img
                 src={imageSrc}
                 alt="Banner"
                 className="banner-image"

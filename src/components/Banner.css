@@ -39,5 +39,16 @@
 }
 
 .banner-button:hover {
-    background-color: #d1b194;;
+    background-color: #d1b194;
+    ;
+}
+
+@media (min-width: 1400px) {
+    .banner-container {
+        width: 100vw;
+    }
+
+    .banner-image {
+        height: 500px;
+    }
 }
