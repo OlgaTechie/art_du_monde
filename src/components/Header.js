@@ -1,24 +1,19 @@
-import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { User, Heart, ShoppingCart } from 'react-feather';
+import { useAuth } from '../hooks/useAuth';  // ← NOUVEAU
 import './Header.css';
 
 const Header = () => {
-    const [user, setUser] = useState(null);
+    const { user, isAdmin } = useAuth();  // ← SIMPLE
     const navigate = useNavigate();
 
-    // Vérifier si un utilisateur est connecté au chargement de la page
-    useEffect(() => {
-        const loggedUser = localStorage.getItem("user");
-        if (loggedUser) {
-            setUser(JSON.parse(loggedUser));
-        }
-    }, []);
-
-    //Fonction pour déconnexion
     const handleLogout = () => {
         localStorage.removeItem("user");
-        setUser(null);
+        navigate("/");
+    };
+
+    const handleAdminLogout = () => {
+        localStorage.removeItem("adminToken");
         navigate("/");
     };
 
@@ -36,26 +31,36 @@ const Header = () => {
                 </div>
 
                 <div className="icons">
+                    {isAdmin && (
+                        <button onClick={handleAdminLogout} className="admin-logout">
+                            🚫 Admin
+                        </button>
+                    )}
+
                     {user ? (
                         <>
                             <span className="username">Bonjour, {user.name}</span>
                             <button onClick={handleLogout} className="logout-button">Se déconnecter</button>
                         </>
-                    ) : (
+                    ) : !isAdmin ? (
                         <Link to="/login">
                             <User className="icon" />
                         </Link>
-                    )}
+                    ) : null}
+
                     <Heart className="icon" />
                     <ShoppingCart className="icon" />
                 </div>
             </div>
 
             <div className="propositions">
-                <Link to="/clothes" className="proposition">Vêtements</Link>
-                <Link to="/accessories" className="proposition">Accessoires</Link>
-                <Link to="/sarongs" className="proposition">Paréos</Link>
+                <Link to="/women" className="proposition">Femmes</Link>
+                <Link to="/children" className="proposition">Enfants</Link>
                 <Link to="/bestsellers" className="proposition">Best Sellers</Link>
+
+                {isAdmin && (
+                    <Link to="/admin" className="proposition admin-link">🔐 Admin</Link>
+                )}
             </div>
         </header>
     );

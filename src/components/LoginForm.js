@@ -5,7 +5,6 @@ import "./LoginForm.css";
 const LoginForm = ({ onLogin, setShowForgotPassword }) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [role, setRole] = useState("client");
     const [emailError, setEmailError] = useState("");
     const [passwordError, setPasswordError] = useState("");
 

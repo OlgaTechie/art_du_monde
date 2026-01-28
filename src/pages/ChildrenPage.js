@@ -7,7 +7,7 @@ const ChildrenPage = () => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        axios.get("http://localhost:5001/api/admin/products?category=children")
+        axios.get("http://localhost:5001/api/admin/public-products?category=children")
             .then(response => setProducts(response.data))
             .catch(error => {
                 console.error("Erreur produits enfants:", error);

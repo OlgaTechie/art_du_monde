@@ -1,19 +1,17 @@
 import { useEffect, useState } from "react";
 import Banner from "../components/Banner";
-import axios from "axios";
+import api from "../services/api"; // utilise ton api.js
 import "./HomePage.css";
 
 const HomePage = () => {
     const [products, setProducts] = useState([]);
 
     useEffect(() => {
-        // API admin avec les 2 produits de test
-        axios.get("http://localhost:5001/api/admin/products")
-            .then(response => {
-                setProducts(response.data);
-            })
-            .catch(error => {
-                console.error("Erreur récupération produits :", error);
+        fetch('http://localhost:5001/api/admin/public-products')
+            .then(res => res.json())
+            .then(setProducts)
+            .catch(err => {
+                console.error("Erreur:", err);
                 setProducts([]);
             });
     }, []);
@@ -31,6 +29,7 @@ const HomePage = () => {
                 buttons={[
                     { label: "Femmes", path: "/women" },
                     { label: "Enfants", path: "/children" },
+                    { label: "Admin", path: "/admin" } // <-- bouton admin corrigé
                 ]}
             />
 

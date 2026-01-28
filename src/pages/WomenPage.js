@@ -7,7 +7,7 @@ const WomenPage = () => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        axios.get("http://localhost:5001/api/admin/products?category=women")
+        axios.get("http://localhost:5001/api/admin/public-products?category=women")
             .then(response => setProducts(response.data))
             .catch(error => {
                 console.error("Erreur produits femmes:", error);
