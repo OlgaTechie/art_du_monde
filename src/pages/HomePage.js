@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
+import { useCart } from '../hooks/useCart';
 import Banner from "../components/Banner";
-import api from "../services/api"; // utilise ton api.js
 import "./HomePage.css";
 
 const HomePage = () => {
     const [products, setProducts] = useState([]);
+    const { addToCart } = useCart();
 
     useEffect(() => {
         fetch('http://localhost:5001/api/admin/public-products')
@@ -45,6 +46,14 @@ const HomePage = () => {
                         />
                         <h3 className="product-title">{product.title}</h3>
                         <p className="product-price">{product.price} €</p>
+
+                        {/* BOUTON AJOUTER AU PANIER */}
+                        <button
+                            className="add-to-cart-btn"
+                            onClick={() => addToCart(product)}
+                        >
+                            ➕ Ajouter au panier
+                        </button>
                     </div>
                 ))}
             </div>

@@ -23,15 +23,15 @@ function App() {
         <Route path="/" element={<Layout />}> {/* Header + Footer partout */}
           <Route index element={<HomePage />} />  {/* / → HomePage */}
           <Route path="/products" element={<ProductsPage />} />
-          <Route path="/cart" element={<CartPage />} />
+          {/* <Route path="/cart" element={<CartPage />} /> */}
           <Route path="/admin" element={<AdminPage />} />
           <Route path="/women" element={<WomenPage />} />
           <Route path="/children" element={<ChildrenPage />} />
           <Route path="/login" element={<LoginPage />} />
-          <Route path="/account" element={<AccountPage />} />
-          <Route path="/about" element={<AboutPage />} />
+          {/* <Route path="/account" element={<AccountPage />} /> */}
+          {/* <Route path="/about" element={<AboutPage />} /> */}
           <Route path="/markets" element={<MarketsPage />} />
-          <Route path="/longdress" element={<LongDressPage />} />
+          {/* <Route path="/longdress" element={<LongDressPage />} /> */}
         </Route>
 
         {/* Login sans layout (optionnel) */}
