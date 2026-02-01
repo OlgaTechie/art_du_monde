@@ -333,6 +333,53 @@
     transform: translateY(-2px);
 }
 
+.dynamic-button-row {
+    position: relative;
+    margin-bottom: 1rem;
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.dynamic-button-row .admin-btn.small {
+    padding: 10px 14px;
+    font-size: 14px;
+    min-width: 50px;
+    flex-shrink: 0;
+    white-space: nowrap;
+}
+
+.dynamic-button-row .admin-input-small {
+    flex: 1;
+}
+
+.add-button {
+    margin-top: 1rem;
+    padding: 12px 24px;
+}
+
+.help-text {
+    color: #666;
+    font-size: 13px;
+    display: block;
+    margin-top: 0.5rem;
+}
+
+.image-preview {
+    max-width: 300px;
+    max-height: 120px;
+    margin-top: 1rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.image-preview-small {
+    max-width: 100px;
+    max-height: 100px;
+    margin-top: 0.5rem;
+    border-radius: 8px;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
     .admin-page {

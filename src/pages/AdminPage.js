@@ -256,15 +256,34 @@ const AdminPage = () => {
             <div className="admin-section">
                 <h2>🏠 Banner HomePage</h2>
                 <div className="form-group">
-                    <label>URL Image</label>
+                    <label>📸 Photo Banner</label>
                     <input
-                        type="url"
-                        value={bannerData.imageSrc}
-                        onChange={(e) => setBannerData({ ...bannerData, imageSrc: e.target.value })}
-                        placeholder="https://picsum.photos/1200/400"
+                        type="file"
+                        accept="image/*"
+                        onChange={async (e) => {
+                            const file = e.target.files[0];
+                            if (file) {
+                                const formData = new FormData();
+                                formData.append('image', file);
+
+                                const res = await fetch(`${API_BASE}/admin/upload`, {
+                                    method: 'POST',
+                                    headers: { 'Authorization': `Bearer ${ADMIN_TOKEN}` },
+                                    body: formData
+                                });
+                                const data = await res.json();
+                                if (data.success) {
+                                    setBannerData({ ...bannerData, imageSrc: data.imageUrl });
+                                }
+                            }
+                        }}
                         className="admin-input"
                     />
+                    {bannerData.imageSrc && (
+                        <img src={bannerData.imageSrc} alt="Preview" className="image-preview" />
+                    )}
                 </div>
+
                 <div className="form-group">
                     <label>Texte principal</label>
                     <textarea
@@ -276,29 +295,59 @@ const AdminPage = () => {
                     />
                 </div>
                 <div className="form-group">
-                    <label>Bouton principal</label>
-                    <div className="button-row">
-                        <input
-                            value={bannerData.buttons[0]?.label || ''}
-                            onChange={(e) => {
-                                const newButtons = [...bannerData.buttons];
-                                newButtons[0] = { ...newButtons[0], label: e.target.value };
-                                setBannerData({ ...bannerData, buttons: newButtons });
-                            }}
-                            placeholder="Femmes"
-                            className="admin-input-small"
-                        />
-                        <input
-                            value={bannerData.buttons[0]?.path || ''}
-                            onChange={(e) => {
-                                const newButtons = [...bannerData.buttons];
-                                newButtons[0] = { ...newButtons[0], path: e.target.value };
-                                setBannerData({ ...bannerData, buttons: newButtons });
-                            }}
-                            placeholder="/women"
-                            className="admin-input-small"
-                        />
-                    </div>
+                    <label>Boutons</label>
+
+                    {bannerData.buttons.map((btn, index) => (
+                        <div key={index} className="button-row dynamic-button-row">
+                            <input
+                                value={btn.label}
+                                onChange={(e) => {
+                                    const newButtons = [...bannerData.buttons];
+                                    newButtons[index] = { ...newButtons[index], label: e.target.value };
+                                    setBannerData({ ...bannerData, buttons: newButtons });
+                                }}
+                                placeholder={`Label bouton ${index + 1} (ex: Femmes)`}
+                                className="admin-input-small"
+                            />
+                            <input
+                                value={btn.path}
+                                onChange={(e) => {
+                                    const newButtons = [...bannerData.buttons];
+                                    newButtons[index] = { ...newButtons[index], path: e.target.value };
+                                    setBannerData({ ...bannerData, buttons: newButtons });
+                                }}
+                                placeholder={`Chemin ${index + 1} (ex: /women)`}
+                                className="admin-input-small"
+                            />
+                            {/* Bouton supprimer sauf si un seul bouton */}
+                            {bannerData.buttons.length > 1 && (
+                                <button
+                                    type="button"
+                                    className="admin-btn secondary small"
+                                    onClick={() => {
+                                        const newButtons = bannerData.buttons.filter((_, i) => i !== index);
+                                        setBannerData({ ...bannerData, buttons: newButtons });
+                                    }}
+                                >
+                                    🗑️
+                                </button>
+                            )}
+                        </div>
+                    ))}
+
+                    {/* Bouton pour ajouter un nouveau bouton */}
+                    <button
+                        type="button"
+                        className="admin-btn primary"
+                        onClick={() => {
+                            setBannerData({
+                                ...bannerData,
+                                buttons: [...bannerData.buttons, { label: '', path: '' }]
+                            });
+                        }}
+                    >
+                        ➕ Ajouter un bouton
+                    </button>
                 </div>
                 <div className="banner-actions">
                     <button onClick={fetchBanner} className="admin-btn secondary">
@@ -330,11 +379,30 @@ const AdminPage = () => {
                             required
                         />
                         <input
-                            placeholder="URL image"
-                            value={formData.image}
-                            onChange={(e) => setFormData({ ...formData, image: e.target.value })}
+                            type="file"
+                            accept="image/*"
+                            onChange={async (e) => {
+                                const file = e.target.files[0];
+                                if (file) {
+                                    const formData = new FormData();
+                                    formData.append('image', file);
+
+                                    const res = await fetch(`${API_BASE}/admin/upload`, {
+                                        method: 'POST',
+                                        headers: { 'Authorization': `Bearer ${ADMIN_TOKEN}` },
+                                        body: formData
+                                    });
+                                    const data = await res.json();
+                                    if (data.success) {
+                                        setFormData({ ...formData, image: data.imageUrl });
+                                    }
+                                }
+                            }}
                             required
                         />
+                        {formData.image && (
+                            <img src={formData.image} alt="Preview" className="image-preview-small" />
+                        )}
                         <input
                             placeholder="Catégorie (women/children)"
                             value={formData.category}
