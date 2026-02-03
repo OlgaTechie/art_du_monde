@@ -35,13 +35,11 @@
 
     .product-card {
         max-width: 350px;
-        /* ← Largeur MAX fixe */
         margin: 0 auto;
     }
 
     .product-image {
         height: 240px;
-        /* ← Plus haute sur grand écran */
     }
 }
 
@@ -76,9 +74,8 @@
 .product-image {
     width: 100%;
     height: 200px;
-    object-fit: contain;
-    object-position: center top;
-    /* ← TÊTE EN HAUT */
+    object-fit: cover;
+    object-position: center;
     border-radius: 12px;
     margin-bottom: 1rem;
     background: #f8f7f5;

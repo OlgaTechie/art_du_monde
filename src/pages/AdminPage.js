@@ -1,5 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import './AdminPage.css';
+import ProductForm from '../components/ProductForm';
+import BannerManager from '../components/BannerManager';
+import ProductList from '../components/ProductList';
+import AdminHeader from '../components/AdminHeader';
 
 // ✅ API BASE URL (pas d'import externe)
 const API_BASE = 'http://localhost:5001/api';
@@ -12,7 +16,10 @@ const AdminPage = () => {
     const [showForm, setShowForm] = useState(false);
     const [editingProduct, setEditingProduct] = useState(null);
     const [formData, setFormData] = useState({
-        name: '', price: '', image: '', category: ''
+        name: '',
+        price: '',
+        image: '',
+        category: ''
     });
 
     // États BANNER
@@ -63,11 +70,27 @@ const AdminPage = () => {
     // 2. PRODUITS - CREATE/UPDATE
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        // ✅ SÉCURITÉ : Toujours des strings définies
+        const name = (formData.name || '').trim();
+        const category = (formData.category || '').trim();
+        const priceValue = parseFloat(formData.price);
+
+        // VALIDATION PLUS INTELLIGENTE
+        if (!name) {
+            alert('❌ Nom du produit requis !');
+            return;
+        }
+        if (isNaN(priceValue) || priceValue <= 0) {
+            alert('❌ Prix valide requis (> 0) !');
+            return;
+        }
+
         const productData = {
-            title: formData.name,
-            price: parseFloat(formData.price),
-            imageUrl: formData.image,
-            category: formData.category,
+            title: name,
+            price: priceValue,
+            imageUrl: formData.image || '',
+            category: category || 'women'  // ✅ Fallback par défaut
         };
 
         try {
@@ -75,10 +98,8 @@ const AdminPage = () => {
                 ? `${API_BASE}/admin/products/${editingProduct._id}`
                 : `${API_BASE}/admin/products`;
 
-            const method = editingProduct ? 'PUT' : 'POST';
-
             const res = await fetch(endpoint, {
-                method,
+                method: editingProduct ? 'PUT' : 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${ADMIN_TOKEN}`
@@ -86,13 +107,16 @@ const AdminPage = () => {
                 body: JSON.stringify(productData),
             });
 
-            if (!res.ok) throw new Error(`HTTP ${res.status}`);
+            if (!res.ok) {
+                const errorText = await res.text();
+                throw new Error(`HTTP ${res.status}: ${errorText}`);
+            }
 
             await fetchProducts();
             resetForm();
             alert('✅ Produit sauvegardé !');
         } catch (err) {
-            console.error('Erreur save:', err);
+            console.error('❌ Erreur:', err);
             alert(`❌ Erreur: ${err.message}`);
         }
     };
@@ -115,13 +139,16 @@ const AdminPage = () => {
 
     // 4. PRODUITS - EDIT
     const handleEdit = (product) => {
+
+        const newFormData = {
+            name: product.title || '',
+            price: product.price ? product.price.toString() : '',
+            image: product.imageUrl || '',
+            category: product.category || ''
+        };
+
         setEditingProduct(product);
-        setFormData({
-            name: product.title,
-            price: product.price,
-            image: product.imageUrl,
-            category: product.category
-        });
+        setFormData(newFormData);
         setShowForm(true);
     };
 
@@ -237,210 +264,43 @@ const AdminPage = () => {
 
     return (
         <div className="admin-page">
-            <div className="admin-header">
-                <h1>🛍️ Art du Monde - Admin</h1>
-                <div className="admin-actions">
-                    <button className="admin-btn secondary" onClick={fetchBanner}>
-                        🔄 Refresh Banner
-                    </button>
-                    <button className="admin-btn primary" onClick={() => setShowForm(true)}>
-                        ➕ Nouveau Produit
-                    </button>
-                    <button className="admin-btn danger" onClick={handleLogout}>
-                        🚪 Déconnexion
-                    </button>
-                </div>
-            </div>
+            <AdminHeader
+                onNewProduct={() => setShowForm(true)}
+                onRefreshBanner={fetchBanner}
+                onLogout={handleLogout}
+                fetchBanner={fetchBanner}
+            />
 
-            {/* BANNER SECTION */}
-            <div className="admin-section">
-                <h2>🏠 Banner HomePage</h2>
-                <div className="form-group">
-                    <label>📸 Photo Banner</label>
-                    <input
-                        type="file"
-                        accept="image/*"
-                        onChange={async (e) => {
-                            const file = e.target.files[0];
-                            if (file) {
-                                const formData = new FormData();
-                                formData.append('image', file);
-
-                                const res = await fetch(`${API_BASE}/admin/upload`, {
-                                    method: 'POST',
-                                    headers: { 'Authorization': `Bearer ${ADMIN_TOKEN}` },
-                                    body: formData
-                                });
-                                const data = await res.json();
-                                if (data.success) {
-                                    setBannerData({ ...bannerData, imageSrc: data.imageUrl });
-                                }
-                            }
-                        }}
-                        className="admin-input"
-                    />
-                    {bannerData.imageSrc && (
-                        <img src={bannerData.imageSrc} alt="Preview" className="image-preview" />
-                    )}
-                </div>
-
-                <div className="form-group">
-                    <label>Texte principal</label>
-                    <textarea
-                        value={bannerData.text}
-                        onChange={(e) => setBannerData({ ...bannerData, text: e.target.value })}
-                        placeholder="Plongez dans la douceur balinaise..."
-                        className="admin-textarea"
-                        rows="3"
-                    />
-                </div>
-                <div className="form-group">
-                    <label>Boutons</label>
-
-                    {bannerData.buttons.map((btn, index) => (
-                        <div key={index} className="button-row dynamic-button-row">
-                            <input
-                                value={btn.label}
-                                onChange={(e) => {
-                                    const newButtons = [...bannerData.buttons];
-                                    newButtons[index] = { ...newButtons[index], label: e.target.value };
-                                    setBannerData({ ...bannerData, buttons: newButtons });
-                                }}
-                                placeholder={`Label bouton ${index + 1} (ex: Femmes)`}
-                                className="admin-input-small"
-                            />
-                            <input
-                                value={btn.path}
-                                onChange={(e) => {
-                                    const newButtons = [...bannerData.buttons];
-                                    newButtons[index] = { ...newButtons[index], path: e.target.value };
-                                    setBannerData({ ...bannerData, buttons: newButtons });
-                                }}
-                                placeholder={`Chemin ${index + 1} (ex: /women)`}
-                                className="admin-input-small"
-                            />
-                            {/* Bouton supprimer sauf si un seul bouton */}
-                            {bannerData.buttons.length > 1 && (
-                                <button
-                                    type="button"
-                                    className="admin-btn secondary small"
-                                    onClick={() => {
-                                        const newButtons = bannerData.buttons.filter((_, i) => i !== index);
-                                        setBannerData({ ...bannerData, buttons: newButtons });
-                                    }}
-                                >
-                                    🗑️
-                                </button>
-                            )}
-                        </div>
-                    ))}
-
-                    {/* Bouton pour ajouter un nouveau bouton */}
-                    <button
-                        type="button"
-                        className="admin-btn primary"
-                        onClick={() => {
-                            setBannerData({
-                                ...bannerData,
-                                buttons: [...bannerData.buttons, { label: '', path: '' }]
-                            });
-                        }}
-                    >
-                        ➕ Ajouter un bouton
-                    </button>
-                </div>
-                <div className="banner-actions">
-                    <button onClick={fetchBanner} className="admin-btn secondary">
-                        🔄 Charger actuel
-                    </button>
-                    <button onClick={saveBanner} disabled={bannerLoading} className="admin-btn primary">
-                        💾 Sauvegarder Banner
-                    </button>
-                </div>
-            </div>
+            {/* FORM BANNER */}
+            <BannerManager
+                bannerData={bannerData}
+                setBannerData={setBannerData}
+                bannerLoading={bannerLoading}
+                API_BASE={API_BASE}
+                ADMIN_TOKEN={ADMIN_TOKEN}
+                fetchBanner={fetchBanner}
+                saveBanner={saveBanner}
+            />
 
             {/* FORM PRODUIT */}
             {showForm && (
-                <div className="form-container">
-                    <h2>{editingProduct ? '✏️ Modifier' : '➕ Ajouter'} Produit</h2>
-                    <form onSubmit={handleSubmit} className="product-form">
-                        <input
-                            placeholder="Nom produit"
-                            value={formData.name}
-                            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                            required
-                        />
-                        <input
-                            type="number"
-                            step="0.01"
-                            placeholder="Prix €"
-                            value={formData.price}
-                            onChange={(e) => setFormData({ ...formData, price: e.target.value })}
-                            required
-                        />
-                        <input
-                            type="file"
-                            accept="image/*"
-                            onChange={async (e) => {
-                                const file = e.target.files[0];
-                                if (file) {
-                                    const formData = new FormData();
-                                    formData.append('image', file);
-
-                                    const res = await fetch(`${API_BASE}/admin/upload`, {
-                                        method: 'POST',
-                                        headers: { 'Authorization': `Bearer ${ADMIN_TOKEN}` },
-                                        body: formData
-                                    });
-                                    const data = await res.json();
-                                    if (data.success) {
-                                        setFormData({ ...formData, image: data.imageUrl });
-                                    }
-                                }
-                            }}
-                            required
-                        />
-                        {formData.image && (
-                            <img src={formData.image} alt="Preview" className="image-preview-small" />
-                        )}
-                        <input
-                            placeholder="Catégorie (women/children)"
-                            value={formData.category}
-                            onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                            required
-                        />
-                        <div className="form-actions">
-                            <button type="submit" className="btn-success">💾 Sauvegarder</button>
-                            <button type="button" className="btn-secondary" onClick={resetForm}>
-                                ❌ Annuler
-                            </button>
-                        </div>
-                    </form>
-                </div>
+                <ProductForm
+                    formData={formData}
+                    setFormData={setFormData}
+                    editingProduct={editingProduct}
+                    API_BASE={API_BASE}
+                    ADMIN_TOKEN={ADMIN_TOKEN}
+                    onCancel={resetForm}
+                    onSubmit={handleSubmit}
+                />
             )}
 
             {/* LISTE PRODUITS */}
-            <div className="products-section">
-                <h2>📦 {products.length} Produits</h2>
-                <div className="products-grid">
-                    {products.map(product => (
-                        <div key={product._id} className="product-card-admin">
-                            <img src={product.imageUrl} alt={product.title} />
-                            <h3>{product.title}</h3>
-                            <p className="price">€{product.price}</p>
-                            <p className="category">{product.category}</p>
-                            <div className="product-actions">
-                                <button className="btn-edit" onClick={() => handleEdit(product)}>
-                                    ✏️ Modifier
-                                </button>
-                                <button className="delete-btn" onClick={() => handleDelete(product._id)}>
-                                    🗑️ Supprimer
-                                </button>
-                            </div>
-                        </div>
-                    ))}
-                </div>
-            </div>
+            <ProductList
+                products={products}
+                onEdit={handleEdit}
+                onDelete={handleDelete}
+            />
         </div>
     );
 };
