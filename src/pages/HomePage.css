@@ -99,7 +99,7 @@
 /* ========== BANIÈRE NOUVELLE ========== */
 .banner {
     width: 100%;
-    max-width: 1200px;
+    max-width: 1400px;
     height: 20vh;
     margin: 0 auto 3rem;
     background-size: cover;
@@ -111,15 +111,11 @@
 /* GRANDS ÉCRANS : Bannière pleine largeur */
 @media (min-width: 1400px) {
     .banner {
-        width: 100vw;
-        /* ← PLEINE LARGEUR écran */
         max-width: 1600px;
-        /* ← Limite pour 4K */
+
         margin: 0 auto 3rem;
         height: 25vh;
-        /* ← Plus haute */
         border-radius: 0;
-        /* ← Plein écran = pas d'angle */
     }
 
     /* Alignement produits sous bannière large */

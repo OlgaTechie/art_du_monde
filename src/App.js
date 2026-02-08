@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Layout from './components/Layout';
+import './styles/global.css';
 
 // Pages
 import HomePage from './pages/HomePage';
@@ -23,7 +24,7 @@ function App() {
         <Route path="/" element={<Layout />}> {/* Header + Footer partout */}
           <Route index element={<HomePage />} />  {/* / → HomePage */}
           <Route path="/products" element={<ProductsPage />} />
-          {/* <Route path="/cart" element={<CartPage />} /> */}
+          <Route path="/cart" element={<CartPage />} />
           <Route path="/admin" element={<AdminPage />} />
           <Route path="/women" element={<WomenPage />} />
           <Route path="/children" element={<ChildrenPage />} />

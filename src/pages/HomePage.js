@@ -37,7 +37,9 @@ const HomePage = () => {
                         {/* BOUTON AJOUTER AU PANIER */}
                         <button
                             className="add-to-cart-btn"
-                            onClick={() => addToCart(product)}
+                            onClick={() =>
+                                addToCart(product)
+                            }
                         >
                             ➕ Ajouter au panier
                         </button>

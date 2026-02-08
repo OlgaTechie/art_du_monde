@@ -1,4 +1,8 @@
 .header {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background: white;
     background-color: #fff;
     padding: 20px 0;
     margin: 0;
@@ -10,15 +14,18 @@
     width: 100%;
 }
 
+body {
+    margin-top: 0 !important;
+}
+
 .header-top {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 100vw;
+    width: 100%;
     padding: 10px 40px;
     box-sizing: border-box;
     position: relative;
-    margin: 0 -20px;
 }
 
 .nav-left {
@@ -150,9 +157,8 @@
     gap: 40px;
     margin-top: 20px;
     width: 100%;
-    max-width: 1200px;
+    max-width: 1400px;
     padding: 0 40px;
-    /* ← Espace latéral */
     flex-wrap: wrap;
     box-sizing: border-box;
 }

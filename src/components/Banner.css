@@ -44,9 +44,6 @@
 }
 
 @media (min-width: 1400px) {
-    .banner-container {
-        width: 100vw;
-    }
 
     .banner-image {
         height: 500px;
