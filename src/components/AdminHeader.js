@@ -7,7 +7,7 @@ const AdminHeader = ({
     fetchBanner
 }) => (
     <div className="admin-header">
-        <h1>🛍️ Art du Monde - Admin</h1>
+        <h1>Art du Monde - Admin</h1>
         <div className="admin-actions">
             <button className="admin-btn secondary" onClick={fetchBanner}>
                 🔄 Refresh Banner

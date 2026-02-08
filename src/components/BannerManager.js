@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 const BannerManager = ({
     bannerData,
@@ -9,6 +9,7 @@ const BannerManager = ({
     fetchBanner,
     saveBanner
 }) => {
+    const [isOpen, setIsOpen] = useState(false); // <-- état toggle
 
     const handleBannerFileChange = async (e) => {
         const file = e.target.files[0];
@@ -47,76 +48,85 @@ const BannerManager = ({
     };
 
     return (
-        <div className="admin-section">
-            <h2>🏠 Banner HomePage</h2>
-
-            {/* Image upload */}
-            <div className="form-group">
-                <label>📸 Photo Banner</label>
-                <input
-                    type="file"
-                    accept="image/*"
-                    onChange={handleBannerFileChange}
-                    className="admin-input"
-                />
-                {bannerData.imageSrc && (
-                    <img src={bannerData.imageSrc} alt="Preview" className="image-preview" />
-                )}
+        <div className="admin-section collapsible">
+            <div className="section-header" onClick={() => setIsOpen(!isOpen)}>
+                <h2>Banner HomePage</h2>
+                <button className="toggle-btn">
+                    {isOpen ? "▲" : "▼"}
+                </button>
             </div>
 
-            {/* Texte */}
-            <div className="form-group">
-                <label>Texte principal</label>
-                <textarea
-                    value={bannerData.text}
-                    onChange={(e) => setBannerData(prev => ({ ...prev, text: e.target.value }))}
-                    placeholder="Plongez dans la douceur balinaise..."
-                    className="admin-textarea"
-                    rows="3"
-                />
-            </div>
-
-            {/* Boutons dynamiques */}
-            <div className="form-group">
-                <label>Boutons</label>
-                {bannerData.buttons.map((btn, index) => (
-                    <div key={index} className="button-row dynamic-button-row">
+            {isOpen && (
+                <div className="section-content">
+                    {/* Image upload */}
+                    <div className="form-group">
+                        <label>Photo Banner</label>
                         <input
-                            value={btn.label}
-                            onChange={(e) => updateButton(index, 'label', e.target.value)}
-                            placeholder={`Label bouton ${index + 1} (ex: Femmes)`}
-                            className="admin-input-small"
+                            type="file"
+                            accept="image/*"
+                            onChange={handleBannerFileChange}
+                            className="admin-input"
                         />
-                        <input
-                            value={btn.path}
-                            onChange={(e) => updateButton(index, 'path', e.target.value)}
-                            placeholder={`Chemin ${index + 1} (ex: /women)`}
-                            className="admin-input-small"
-                        />
-                        {bannerData.buttons.length > 1 && (
-                            <button
-                                type="button"
-                                className="admin-btn secondary small"
-                                onClick={() => removeButton(index)}
-                            >
-                                🗑️
-                            </button>
+                        {bannerData.imageSrc && (
+                            <img src={bannerData.imageSrc} alt="Preview" className="image-preview" />
                         )}
                     </div>
-                ))}
-                <button type="button" className="admin-btn primary" onClick={addButton}>
-                    ➕ Ajouter un bouton
-                </button>
-            </div>
 
-            <div className="banner-actions">
-                <button onClick={fetchBanner} className="admin-btn secondary">
-                    🔄 Charger actuel
-                </button>
-                <button onClick={saveBanner} disabled={bannerLoading} className="admin-btn primary">
-                    💾 Sauvegarder Banner
-                </button>
-            </div>
+                    {/* Texte */}
+                    <div className="form-group">
+                        <label>Texte principal</label>
+                        <textarea
+                            value={bannerData.text}
+                            onChange={(e) => setBannerData(prev => ({ ...prev, text: e.target.value }))}
+                            placeholder="Plongez dans la douceur balinaise..."
+                            className="admin-textarea"
+                            rows="3"
+                        />
+                    </div>
+
+                    {/* Boutons dynamiques */}
+                    <div className="form-group">
+                        <label>Boutons</label>
+                        {bannerData.buttons.map((btn, index) => (
+                            <div key={index} className="button-row dynamic-button-row">
+                                <input
+                                    value={btn.label}
+                                    onChange={(e) => updateButton(index, 'label', e.target.value)}
+                                    placeholder={`Label bouton ${index + 1}`}
+                                    className="admin-input-small"
+                                />
+                                <input
+                                    value={btn.path}
+                                    onChange={(e) => updateButton(index, 'path', e.target.value)}
+                                    placeholder={`Chemin ${index + 1}`}
+                                    className="admin-input-small"
+                                />
+                                {bannerData.buttons.length > 1 && (
+                                    <button
+                                        type="button"
+                                        className="admin-btn secondary small"
+                                        onClick={() => removeButton(index)}
+                                    >
+                                        🗑️
+                                    </button>
+                                )}
+                            </div>
+                        ))}
+                        <button type="button" className="admin-btn primary" onClick={addButton}>
+                            ➕ Ajouter un bouton
+                        </button>
+                    </div>
+
+                    <div className="banner-actions">
+                        <button onClick={fetchBanner} className="admin-btn secondary">
+                            🔄 Charger actuel
+                        </button>
+                        <button onClick={saveBanner} disabled={bannerLoading} className="admin-btn primary">
+                            💾 Sauvegarder Banner
+                        </button>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };

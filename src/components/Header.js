@@ -45,19 +45,19 @@ const Header = () => {
                         to="/"
                         className={`nav-link home-link ${location.pathname === '/' ? 'active' : ''}`}
                     >
-                        🏠 Acheter
+                        Acheter
                     </Link>
                     <Link
                         to="/about"
                         className={`nav-link ${location.pathname === '/about' ? 'active' : ''}`}
                     >
-                        ℹ️ À propos
+                        À propos
                     </Link>
                     <Link
                         to="/markets"
                         className={`nav-link ${location.pathname === '/markets' ? 'active' : ''}`}
                     >
-                        🛒 Marchés
+                        Marchés
                     </Link>
                 </nav>
 
@@ -107,19 +107,19 @@ const Header = () => {
                     to="/women"
                     className={`proposition ${location.pathname === '/women' ? 'active' : ''}`}
                 >
-                    👗 Femmes
+                    Femmes
                 </Link>
                 <Link
                     to="/children"
                     className={`proposition ${location.pathname === '/children' ? 'active' : ''}`}
                 >
-                    👶 Enfants
+                    Enfants
                 </Link>
                 <Link
                     to="/bestsellers"
                     className={`proposition ${location.pathname === '/bestsellers' ? 'active' : ''}`}
                 >
-                    ⭐ Best Sellers
+                    Best Sellers
                 </Link>
 
                 {isAdmin && (
