@@ -1,4 +1,3 @@
-/* 🔥 CONTAINER UNIFORME 1400px */
 .container {
     max-width: 1400px;
     margin: 0 auto;
@@ -6,7 +5,21 @@
     box-sizing: border-box;
 }
 
-/* Reset margins gênants */
+.main-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    box-sizing: border-box;
+}
+
+.inner-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    width: 100%;
+    box-sizing: border-box;
+}
+
 * {
     box-sizing: border-box;
 }
@@ -14,4 +27,20 @@
 body {
     margin: 0;
     padding: 0;
+}
+
+.app-shell {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+
+
+@media (min-width: 1400px) {
+
+    .main-container,
+    .inner-container {
+        padding: 0 2rem;
+    }
 }

@@ -40,7 +40,7 @@ body {
     font-size: 18px;
     font-weight: 500;
     font-family: 'Merriweather', serif;
-    padding: 8px 16px;
+    padding: 12px 24px;
     border-radius: 25px;
     transition: all 0.3s ease;
     position: relative;
@@ -132,7 +132,7 @@ body {
     background: linear-gradient(135deg, #E6CCB2, #C4A484);
     color: #333;
     border: none;
-    padding: 8px 16px;
+    padding: 12px 24px;
     border-radius: 25px;
     font-weight: 500;
     font-size: 14px;
@@ -158,7 +158,7 @@ body {
     margin-top: 20px;
     width: 100%;
     max-width: 1400px;
-    padding: 0 40px;
+    padding: 20px 40px;
     flex-wrap: wrap;
     box-sizing: border-box;
 }
@@ -170,10 +170,11 @@ body {
     font-weight: 500;
     font-family: 'Merriweather', serif;
     padding: 12px 24px;
-    border-radius: 30px;
+    border-radius: 25px;
     transition: all 0.3s ease;
     position: relative;
-    border: 2px solid transparent;
+
+    display: inline-block;
 }
 
 .proposition:hover,
