@@ -4,6 +4,7 @@ import ProductForm from '../components/ProductForm';
 import BannerManager from '../components/BannerManager';
 import ProductList from '../components/ProductList';
 import AdminHeader from '../components/AdminHeader';
+import AboutManager from '../components/AboutManager';
 
 // ✅ API BASE URL (pas d'import externe)
 const API_BASE = 'http://localhost:5001/api';
@@ -30,6 +31,16 @@ const AdminPage = () => {
     });
     const [bannerLoading, setBannerLoading] = useState(false);
 
+    // États ABOUT ✅ SIMPLIFIÉS
+    const [aboutData, setAboutData] = useState({ title: '', subtitle: '', sections: [] });
+    const [showAboutForm, setShowAboutForm] = useState(false);
+    const [editingSection, setEditingSection] = useState(null);
+    const [aboutFormData, setAboutFormData] = useState({ title: '', text: '', imageUrl: '', imageRight: true });
+
+    // 🔥 ÉTAT MODAL 
+    const [deleteConfirm, setDeleteConfirm] = useState({ show: false, sectionId: null });
+    const [successMessage, setSuccessMessage] = useState('');
+
     // États AUTH
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [loginError, setLoginError] = useState('');
@@ -40,8 +51,7 @@ const AdminPage = () => {
         const token = localStorage.getItem('adminToken');
         if (token) {
             setIsAuthenticated(true);
-            fetchProducts();
-            fetchBanner();
+            Promise.all([fetchProducts(), fetchBanner(), fetchAbout()]);
         }
     }, []);
 
@@ -191,6 +201,19 @@ const AdminPage = () => {
         setBannerLoading(false);
     };
 
+    const fetchAbout = async () => {
+        try {
+            const res = await fetch(`${API_BASE}/admin/about`, {
+                headers: { 'Authorization': `Bearer ${ADMIN_TOKEN}` }
+            });
+            if (!res.ok) throw new Error();
+            const data = await res.json();
+            setAboutData(data);
+        } catch (err) {
+            console.error('About fetch error:', err);
+        }
+    };
+
     // 🔐 LOGIN
     const handleLogin = async () => {
         try {
@@ -205,7 +228,7 @@ const AdminPage = () => {
             if (data.success) {
                 localStorage.setItem('adminToken', data.token);
                 setIsAuthenticated(true);
-                await Promise.all([fetchProducts(), fetchBanner()]);
+                await Promise.all([fetchProducts(), fetchBanner(), fetchAbout()]);
             } else {
                 throw new Error(data.message);
             }
@@ -220,6 +243,7 @@ const AdminPage = () => {
         localStorage.removeItem('adminToken');
         setIsAuthenticated(false);
         setProducts([]);
+        setAboutData({ title: '', subtitle: '', sections: [] });
     };
 
     // FORM LOGIN (si pas connecté)
@@ -262,6 +286,30 @@ const AdminPage = () => {
 
     if (productLoading) return <div className="loading">Chargement produits...</div>;
 
+    // 🔄 RÉORDONNER SECTIONS
+    const moveSection = async (sectionId, direction) => {
+        try {
+            const res = await fetch(`${API_BASE}/admin/about/reorder`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${ADMIN_TOKEN}`
+                },
+                body: JSON.stringify({ sectionId, direction })
+            });
+            if (res.ok) {
+                fetchAbout();
+            }
+        } catch (err) {
+            console.error('Erreur réordonnement:', err);
+        }
+    };
+
+    const handleAboutSuccess = (message) => {
+        setSuccessMessage(message);
+        setTimeout(() => setSuccessMessage(''), 3000);
+    };
+
     return (
         <div className="admin-page">
             <AdminHeader
@@ -280,6 +328,27 @@ const AdminPage = () => {
                 ADMIN_TOKEN={ADMIN_TOKEN}
                 fetchBanner={fetchBanner}
                 saveBanner={saveBanner}
+            />
+
+            {/* FORM ABOUT */}
+            <AboutManager
+                aboutData={aboutData}
+                setAboutData={setAboutData}
+                showAboutForm={showAboutForm}
+                setShowAboutForm={setShowAboutForm}
+                editingSection={editingSection}
+                setEditingSection={setEditingSection}
+                aboutFormData={aboutFormData}
+                setAboutFormData={setAboutFormData}
+                API_BASE={API_BASE}
+                ADMIN_TOKEN={ADMIN_TOKEN}
+                fetchAbout={fetchAbout}
+                deleteConfirm={deleteConfirm}
+                setDeleteConfirm={setDeleteConfirm}
+                moveSection={moveSection}
+                successMessage={successMessage}
+                setSuccessMessage={setSuccessMessage}
+                onSuccess={handleAboutSuccess}
             />
 
             {/* FORM PRODUIT */}
@@ -301,6 +370,50 @@ const AdminPage = () => {
                 onEdit={handleEdit}
                 onDelete={handleDelete}
             />
+
+            {/* POP-UP SUCCÈS ICI 👇 */}
+            {successMessage && (
+                <div className="success-modal-overlay">
+                    <div className="success-modal">
+                        <div className="success-icon">✅</div>
+                        <h3>Succès !</h3>
+                        <p>{successMessage}</p>
+                    </div>
+                </div>
+            )}
+
+            {/* 🔥 POP-UP CONFIRMATION SUPPRESSION */}
+            {deleteConfirm.show && (
+                <div className="delete-modal-overlay">
+                    <div className="delete-modal">
+                        <h3>⚠️ Confirmer la suppression</h3>
+                        <p>Êtes-vous sûr de vouloir supprimer cette section ?</p>
+                        <div className="modal-buttons">
+                            <button
+                                onClick={() => setDeleteConfirm({ show: false, sectionId: null })}
+                                className="modal-btn cancel"
+                            >
+                                ❌ Annuler
+                            </button>
+                            <button
+                                onClick={async () => {
+                                    if (deleteConfirm.sectionId) {
+                                        await fetch(`${API_BASE}/admin/about/section/${deleteConfirm.sectionId}`, {
+                                            method: 'DELETE',
+                                            headers: { 'Authorization': `Bearer ${ADMIN_TOKEN}` }
+                                        });
+                                        fetchAbout();
+                                    }
+                                    setDeleteConfirm({ show: false, sectionId: null });
+                                }}
+                                className="modal-btn delete"
+                            >
+                                ✅ Oui, supprimer
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };

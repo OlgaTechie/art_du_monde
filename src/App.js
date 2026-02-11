@@ -30,7 +30,7 @@ function App() {
           <Route path="/children" element={<ChildrenPage />} />
           <Route path="/login" element={<LoginPage />} />
           {/* <Route path="/account" element={<AccountPage />} /> */}
-          {/* <Route path="/about" element={<AboutPage />} /> */}
+          <Route path="/about" element={<AboutPage />} />
           <Route path="/markets" element={<MarketsPage />} />
           {/* <Route path="/longdress" element={<LongDressPage />} /> */}
         </Route>
